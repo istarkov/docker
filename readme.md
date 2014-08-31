@@ -3,7 +3,7 @@
 * там же читаем что такое докер https://docs.docker.com/introduction/understanding-docker/  
 если лень читать, то docker контейнеры можно рассматривать как stateless виртуальные машины с мгновенным стартом, а сам docker это удобная среда для настройки, деплоя и управления контейнерами *(пока она очень удобна для работы с неколькими контейнерами в рамках одной машины, но в след. версиях уже будет удобна и в рамках кластера)*   
 * если ставим на Linux то не забываем добавить своего юзера в группу docker
-```shell
+```bash
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
@@ -38,7 +38,7 @@ docker pull phusion/baseimage:0.9.13
 ---
 
 ###Поиграться сразу можно так
-```shell
+```bash
 docker run --rm -e "LANG=en_US.UTF-8" -e "LC_ALL=en_US.UTF-8" -t -i phusion/baseimage:0.9.13 /sbin/my_init -- bash -l
 ```
 ####крыжики
@@ -53,7 +53,7 @@ docker run --rm -e "LANG=en_US.UTF-8" -e "LC_ALL=en_US.UTF-8" -t -i phusion/base
 
 ###Теперь сбилдим контейнер на основе Dockerfile
 * отклонируем текущий проект себе
-```shell
+```bash
 cd projects
 git clone git@github.com:istarkov/docker.git
 cd docker
@@ -63,7 +63,7 @@ cd docker
 устанавливаем основные зависимости, создаем юзеров,   
 прописываем ключи для ssh   
 смотрим в Dockerfile там пошагово расписано что мы делаем
-```shell
+```bash
 #копируем в билд свой публичный ключ (нужен для ssh)
 cp ~/.ssh/id_rsa.pub id_rsa.pub
 #билдим базовый image
@@ -72,7 +72,7 @@ docker build -t istarkov/base .
 
 * создаем image основанный на базовом, что будет происходить смотрим в tmuxexample/Dockerfile  
 устанавливаем глобальные зависимости проекта, компилим библиотеку, прописываем deplyment ключ проекта, клонируем проект (и тп.)
-```shell
+```bash
 docker build -t istarkov/tmuxexample tmuxexample
 ```
 файлы Dockerfile хорошо откомментированы и легки для прочтения, поэтому подробности что и зачем они делают внутри
@@ -80,11 +80,11 @@ docker build -t istarkov/tmuxexample tmuxexample
 
 * #####стартуем
 либо так - если чуем, что что то придется доставлять в контейнер и т.п. *(по хорошему у юзера ice созданного на предыдущем шаге не должно быть sudo)* поэтому контейнер будет запущен в интерактивном режиме c запущенным bash
-```shell
+```bash
 docker run --rm -t -i -p 3222:22 istarkov/tmuxexample /sbin/my_init -- bash -l
 ```
 или так - в демон режиме
-```shell
+```bash
 docker run -d -p 3222:22 istarkov/tmuxexample
 ```
 #####новые крыжики
@@ -94,11 +94,11 @@ docker run -d -p 3222:22 istarkov/tmuxexample
 
 ####Начинаем играть с контейнером
 * На маке по ssh к полученному контейнеру коннектимся так
-```shell
+```bash
 ssh -p 3222 "ice@`boot2docker ip 2>&1 | sed -n 2,2p | awk -F' ' '{print $9}'`"
 ```
 * на линуксе так
-```shell
+```bash
 ssh -p 3222 ice@linux_machine_ip
 ```
 * сконнектившись запускаем команду ./run которая запустит проект - в данном случае tmux менеджер с заранее преконфигуренными опциями
@@ -108,17 +108,17 @@ ssh -p 3222 ice@linux_machine_ip
 
 ####Полезняки: 
 * стереть image так
-```shell
+```bash
 docker rmi istarkov/tmuxexample
 ```
 
 * убить все не сбилженые контейнеры и имажи
-```shell
+```bash
 docker rm $(docker ps -a -q)
 docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
 ```
 * посмотреть какие есть сбилженые image
-```shell
+```bash
 docker images
 ```
 * остальные команды читать тут https://docs.docker.com/userguide/
@@ -136,7 +136,7 @@ docker images
 Качаем два уже подготовленных мной файла https://drive.google.com/folderview?id=0B-jWb9pIDkx-NS05TFdwZVNGQm8&usp=sharing   
 подменяем ./boot2docker/boot2docker.iso на скачанный boot2docker.iso   
 копируем на linux сервера файл docker-1.2.0-dev заходим по ssh и выполняем команду (подменяем установленный докер сервис своим)
-```shell
+```bash
 sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp docker-1.2.0-dev $(which docker);sudo service docker 
 ```
 
@@ -144,7 +144,7 @@ sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp do
 * #####Вариант 2
 *билдим docker и boot2docker сами*  
 Запускаем linux (*под маком с билдом докера лучше не связываться*) не забываем добавить своего юзера в группу docker
-```shell
+```bash
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
@@ -156,7 +156,7 @@ sudo service docker restart
 ```
 
 * потом билдим докер (см. ссылку) генерим бинарник и выполняем 
-```shell
+```bash
 sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp ./bundles/1.2.0-dev/binary/docker-1.2.0-dev $(which docker);sudo service docker start
 ```
 
@@ -170,15 +170,15 @@ sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp ./
 
 * Запускаем linux (*под маком с билдом тоже лучше не связываться*) 
 * отпулим себе базовый контейнер билда iso
-```shell
+```bash
 docker pull boot2docker/boot2docker
 ```
 * откопируем новый docker себе в папку с boot2docker
-```shell
+```bash
 cp /home/ice/docker_test/docker_src/docker/bundles/1.2.0-dev/binary/docker-1.2.0-dev docker-1.2.0-dev
 ```
 * создаем докерфайл
-```shell
+```bash
 FROM boot2docker/boot2docker
 COPY docker-1.2.0-dev $ROOTFS/usr/local/bin/docker
 RUN chmod +x $ROOTFS/usr/local/bin/docker
@@ -187,27 +187,27 @@ RUN /make_iso.sh
 CMD ["cat", "boot2docker.iso"]
 ```
 * билдим контейнер который в процесе билда создаст образ
-```shell
+```bash
 sudo docker build -t istarkov/boot2docker .
 ```
 * выводим результат себе из контейнера
-```shell
+```bash
 sudo docker run --rm istarkov/boot2docker > boot2docker.iso
 ```
 * гасим докер если запущен
-```shell
+```bash
 boot2docker down
 ```
 * копируем сбилженое iso к себе
-```shell
+```bash
 rsync -e ssh -avz --progress ice@turk:~/docker_test/docker/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
 ```
 * Шарим фолдер на макоси на виртуалку - чтобы mount volume опция докера работала на макоси также как и на linux
-```shell
+```bash
 VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users
 ```
 * Апаем boot2docker взад и проверяем что все замапилось нормально
-```shell
+```bash
 boot2docker up
 #не ленимся прописать export DOCKER_HOST=tcp://смотри вывод boot2docker up:2375
 boot2docker ssh
