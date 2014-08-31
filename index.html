@@ -41,10 +41,10 @@
 если лень читать, то docker контейнеры можно рассматривать как stateless виртуальные машины с мгновенным стартом, а сам docker это удобная среда для настройки, деплоя и управления контейнерами <em>(пока она очень удобна для работы с неколькими контейнерами в рамках одной машины, но в след. версиях уже будет удобна и в рамках кластера)</em><br>
 </li>
 <li>если ставим на Linux то не забываем добавить своего юзера в группу docker</li>
-</ul><pre lang="shell"><code>sudo groupadd docker
-sudo gpasswd -a ${USER} docker
+</ul><div class="highlight highlight-bash"><pre>sudo groupadd docker
+sudo gpasswd -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> docker
 sudo service docker restart
-</code></pre>
+</pre></div>
 
 <p>после перезапустить shell (закрыть терминал открыть терминал)</p>
 
@@ -91,8 +91,8 @@ docker pull phusion/baseimage:0.9.13</p></li>
 </ul><hr><h3>
 <a name="%D0%9F%D0%BE%D0%B8%D0%B3%D1%80%D0%B0%D1%82%D1%8C%D1%81%D1%8F-%D1%81%D1%80%D0%B0%D0%B7%D1%83-%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE-%D1%82%D0%B0%D0%BA" class="anchor" href="#%D0%9F%D0%BE%D0%B8%D0%B3%D1%80%D0%B0%D1%82%D1%8C%D1%81%D1%8F-%D1%81%D1%80%D0%B0%D0%B7%D1%83-%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE-%D1%82%D0%B0%D0%BA"><span class="octicon octicon-link"></span></a>Поиграться сразу можно так</h3>
 
-<pre lang="shell"><code>docker run --rm -e "LANG=en_US.UTF-8" -e "LC_ALL=en_US.UTF-8" -t -i phusion/baseimage:0.9.13 /sbin/my_init -- bash -l
-</code></pre>
+<div class="highlight highlight-bash"><pre>docker run --rm -e <span class="s2">"LANG=en_US.UTF-8"</span> -e <span class="s2">"LC_ALL=en_US.UTF-8"</span> -t -i phusion/baseimage:0.9.13 /sbin/my_init -- bash -l
+</pre></div>
 
 <h4>
 <a name="%D0%BA%D1%80%D1%8B%D0%B6%D0%B8%D0%BA%D0%B8" class="anchor" href="#%D0%BA%D1%80%D1%8B%D0%B6%D0%B8%D0%BA%D0%B8"><span class="octicon octicon-link"></span></a>крыжики</h4>
@@ -109,58 +109,64 @@ docker pull phusion/baseimage:0.9.13</p></li>
 
 <ul>
 <li>отклонируем текущий проект себе</li>
-</ul><pre lang="shell"><code>cd projects
+</ul><div class="highlight highlight-bash"><pre><span class="nb">cd </span>projects
 git clone git@github.com:istarkov/docker.git
-cd docker
-</code></pre>
+<span class="nb">cd </span>docker
+</pre></div>
 
 <ul>
-<li>#####билдим базовый image
+<li>
+<strong>билдим базовый image</strong>
 устанавливаем основные зависимости, создаем юзеров,<br>
 прописываем ключи для ssh<br>
 смотрим в Dockerfile там пошагово расписано что мы делаем</li>
-</ul><pre lang="shell"><code>#копируем в билд свой публичный ключ (нужен для ssh)
+</ul><div class="highlight highlight-bash"><pre><span class="c">#копируем в билд свой публичный ключ (нужен для ssh)</span>
 cp ~/.ssh/id_rsa.pub id_rsa.pub
-#билдим базовый image
+<span class="c">#билдим базовый image</span>
 docker build -t istarkov/base .
-</code></pre>
+</pre></div>
 
 <ul>
 <li>создаем image основанный на базовом, что будет происходить смотрим в tmuxexample/Dockerfile<br>
 устанавливаем глобальные зависимости проекта, компилим библиотеку, прописываем deplyment ключ проекта, клонируем проект (и тп.)</li>
-</ul><pre lang="shell"><code>docker build -t istarkov/tmuxexample tmuxexample
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>docker build -t istarkov/tmuxexample tmuxexample
+</pre></div>
 
-<p>файлы Dockerfile хорошо откомментированы и легки для прочтения, поэтому подробности что и зачем они делают внутри</p>
+<p>файлы Dockerfile хорошо откомментированы и легки для прочтения, поэтому подробности что и зачем они делают внутри   </p>
+
+<h4>
+<a name="c%D1%82%D0%B0%D1%80%D1%82%D1%83%D0%B5%D0%BC" class="anchor" href="#c%D1%82%D0%B0%D1%80%D1%82%D1%83%D0%B5%D0%BC"><span class="octicon octicon-link"></span></a>Cтартуем</h4>
 
 <ul>
-<li>#####стартуем
-либо так - если чуем, что что то придется доставлять в контейнер и т.п. <em>(по хорошему у юзера ice созданного на предыдущем шаге не должно быть sudo)</em> поэтому контейнер будет запущен в интерактивном режиме c запущенным bash</li>
-</ul><pre lang="shell"><code>docker run --rm -t -i -p 3222:22 istarkov/tmuxexample /sbin/my_init -- bash -l
-</code></pre>
+<li>либо так - если чуем, что что то придется доставлять в контейнер и т.п. <em>(по хорошему у юзера ice созданного на предыдущем шаге не должно быть sudo)</em> поэтому контейнер будет запущен в интерактивном режиме c запущенным bash</li>
+</ul><div class="highlight highlight-bash"><pre>docker run --rm -t -i -p 3222:22 istarkov/tmuxexample /sbin/my_init -- bash -l
+</pre></div>
 
-<p>или так - в демон режиме</p>
+<ul>
+<li>или так - в демон режиме</li>
+</ul><div class="highlight highlight-bash"><pre>docker run -d -p 3222:22 istarkov/tmuxexample
+</pre></div>
 
-<pre lang="shell"><code>docker run -d -p 3222:22 istarkov/tmuxexample
-</code></pre>
-
-<h5>
-<a name="%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5-%D0%BA%D1%80%D1%8B%D0%B6%D0%B8%D0%BA%D0%B8" class="anchor" href="#%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5-%D0%BA%D1%80%D1%8B%D0%B6%D0%B8%D0%BA%D0%B8"><span class="octicon octicon-link"></span></a>новые крыжики</h5>
+<ul>
+<li>
+<em>новые крыжики</em>
 
 <ul>
 <li> -p 3222:22 замапить порт 3222 на хост машине на порт 22 докера </li>
+</ul>
+</li>
 </ul><hr><h4>
 <a name="%D0%9D%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D0%B5%D0%BC-%D0%B8%D0%B3%D1%80%D0%B0%D1%82%D1%8C-%D1%81-%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%BE%D0%BC" class="anchor" href="#%D0%9D%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D0%B5%D0%BC-%D0%B8%D0%B3%D1%80%D0%B0%D1%82%D1%8C-%D1%81-%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%BE%D0%BC"><span class="octicon octicon-link"></span></a>Начинаем играть с контейнером</h4>
 
 <ul>
 <li>На маке по ssh к полученному контейнеру коннектимся так</li>
-</ul><pre lang="shell"><code>ssh -p 3222 "ice@`boot2docker ip 2&gt;&amp;1 | sed -n 2,2p | awk -F' ' '{print $9}'`"
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>ssh -p <span class="m">3222</span> <span class="s2">"ice@`boot2docker ip 2&gt;&amp;1 | sed -n 2,2p | awk -F' ' '{print $9}'`"</span>
+</pre></div>
 
 <ul>
 <li>на линуксе так</li>
-</ul><pre lang="shell"><code>ssh -p 3222 ice@linux_machine_ip
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>ssh -p <span class="m">3222</span> ice@linux_machine_ip
+</pre></div>
 
 <ul>
 <li>сконнектившись запускаем команду ./run которая запустит проект - в данном случае tmux менеджер с заранее преконфигуренными опциями</li>
@@ -169,19 +175,19 @@ docker build -t istarkov/base .
 
 <ul>
 <li>стереть image так</li>
-</ul><pre lang="shell"><code>docker rmi istarkov/tmuxexample
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>docker rmi istarkov/tmuxexample
+</pre></div>
 
 <ul>
 <li>убить все не сбилженые контейнеры и имажи</li>
-</ul><pre lang="shell"><code>docker rm $(docker ps -a -q)
-docker rmi $(docker images | grep "^&lt;none&gt;" | awk "{print $3}")
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>docker rm <span class="k">$(</span>docker ps -a -q<span class="k">)</span>
+docker rmi <span class="k">$(</span>docker images <span class="p">|</span> grep <span class="s2">"^&lt;none&gt;"</span> <span class="p">|</span> awk <span class="s2">"{print $3}"</span><span class="k">)</span>
+</pre></div>
 
 <ul>
 <li>посмотреть какие есть сбилженые image</li>
-</ul><pre lang="shell"><code>docker images
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>docker images
+</pre></div>
 
 <ul>
 <li>остальные команды читать тут <a href="https://docs.docker.com/userguide/">https://docs.docker.com/userguide/</a>
@@ -195,21 +201,23 @@ docker rmi $(docker images | grep "^&lt;none&gt;" | awk "{print $3}")
 <a name="%D0%9A%D0%B0%D0%BA-%D1%81-%D1%8D%D1%82%D0%B8%D0%BC-%D0%B1%D0%BE%D1%80%D0%B5%D0%BC%D1%81%D1%8F---%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BC-%D0%BA%D0%BE%D0%B4-%D0%B4%D0%BE%D0%BA%D0%B5%D1%80%D0%B0-%D0%B8-%D0%BA%D0%BE%D0%B4-boot2docker-%D0%B5%D1%81%D0%BB%D0%B8-%D1%83-%D0%B2%D0%B0%D1%81-apple-%D0%BC%D0%B0%D0%BA" class="anchor" href="#%D0%9A%D0%B0%D0%BA-%D1%81-%D1%8D%D1%82%D0%B8%D0%BC-%D0%B1%D0%BE%D1%80%D0%B5%D0%BC%D1%81%D1%8F---%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BC-%D0%BA%D0%BE%D0%B4-%D0%B4%D0%BE%D0%BA%D0%B5%D1%80%D0%B0-%D0%B8-%D0%BA%D0%BE%D0%B4-boot2docker-%D0%B5%D1%81%D0%BB%D0%B8-%D1%83-%D0%B2%D0%B0%D1%81-apple-%D0%BC%D0%B0%D0%BA"><span class="octicon octicon-link"></span></a>Как с этим боремся - правим код докера, и код boot2docker если у вас apple мак</h4>
 
 <ul>
-<li>#####Вариант 1<br>
+<li>
+<strong>Вариант 1</strong>
 Качаем два уже подготовленных мной файла <a href="https://drive.google.com/folderview?id=0B-jWb9pIDkx-NS05TFdwZVNGQm8&amp;usp=sharing">https://drive.google.com/folderview?id=0B-jWb9pIDkx-NS05TFdwZVNGQm8&amp;usp=sharing</a><br>
 подменяем ./boot2docker/boot2docker.iso на скачанный boot2docker.iso<br>
 копируем на linux сервера файл docker-1.2.0-dev заходим по ssh и выполняем команду (подменяем установленный докер сервис своим)</li>
-</ul><pre lang="shell"><code>sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp docker-1.2.0-dev $(which docker);sudo service docker 
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>sudo service docker stop <span class="p">;</span> sudo cp <span class="k">$(</span>which docker<span class="k">)</span> <span class="k">$(</span>which docker<span class="k">)</span>_ <span class="p">;</span> sudo cp docker-1.2.0-dev <span class="k">$(</span>which docker<span class="k">)</span><span class="p">;</span>sudo service docker 
+</pre></div>
 
 <ul>
-<li>#####Вариант 2
+<li>
+<strong>Вариант 2</strong>
 <em>билдим docker и boot2docker сами</em><br>
 Запускаем linux (<em>под маком с билдом докера лучше не связываться</em>) не забываем добавить своего юзера в группу docker</li>
-</ul><pre lang="shell"><code>sudo groupadd docker
-sudo gpasswd -a ${USER} docker
+</ul><div class="highlight highlight-bash"><pre>sudo groupadd docker
+sudo gpasswd -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> docker
 sudo service docker restart
-</code></pre>
+</pre></div>
 
 <ul>
 <li>читаем и настраиваем <a href="https://docs.docker.com/contributing/devenvironment/">https://docs.docker.com/contributing/devenvironment/</a>
@@ -220,8 +228,8 @@ sudo service docker restart
 
 <ul>
 <li>потом билдим докер (см. ссылку) генерим бинарник и выполняем </li>
-</ul><pre lang="shell"><code>sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp ./bundles/1.2.0-dev/binary/docker-1.2.0-dev $(which docker);sudo service docker start
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>sudo service docker stop <span class="p">;</span> sudo cp <span class="k">$(</span>which docker<span class="k">)</span> <span class="k">$(</span>which docker<span class="k">)</span>_ <span class="p">;</span> sudo cp ./bundles/1.2.0-dev/binary/docker-1.2.0-dev <span class="k">$(</span>which docker<span class="k">)</span><span class="p">;</span>sudo service docker start
+</pre></div>
 
 <p>дальше надо этот бинарник заюзать для osx,<br>
 для этого нам надо перебилдить boot2docker.iso или попросить его у меня.</p>
@@ -233,62 +241,59 @@ sudo service docker restart
 
 <ul>
 <li>Запускаем linux (<em>под маком с билдом тоже лучше не связываться</em>) </li>
-<li>вытащить конфиг
-<a href="http://viget.com/extend/how-to-use-docker-on-os-x-the-missing-guide">http://viget.com/extend/how-to-use-docker-on-os-x-the-missing-guide</a> тут про риплейс iso
-boot2docker config &gt; ~/.boot2docker/profile
-отпулим себе базовый контейнер билда iso</li>
-</ul><pre lang="shell"><code>docker pull boot2docker/boot2docker
-</code></pre>
+<li>отпулим себе базовый контейнер билда iso</li>
+</ul><div class="highlight highlight-bash"><pre>docker pull boot2docker/boot2docker
+</pre></div>
 
 <ul>
 <li>откопируем новый docker себе в папку с boot2docker</li>
-</ul><pre lang="shell"><code>cp /home/ice/docker_test/docker_src/docker/bundles/1.2.0-dev/binary/docker-1.2.0-dev docker-1.2.0-dev
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>cp /home/ice/docker_test/docker_src/docker/bundles/1.2.0-dev/binary/docker-1.2.0-dev docker-1.2.0-dev
+</pre></div>
 
 <ul>
 <li>создаем докерфайл</li>
-</ul><pre lang="shell"><code>FROM boot2docker/boot2docker
-COPY docker-1.2.0-dev $ROOTFS/usr/local/bin/docker
-RUN chmod +x $ROOTFS/usr/local/bin/docker
-#тут код для установки guest additions на виртуальную машину который копипастим отсюда https://gist.github.com/mattes/2d0ffd027cb16571895c
+</ul><div class="highlight highlight-bash"><pre>FROM boot2docker/boot2docker
+COPY docker-1.2.0-dev <span class="nv">$ROOTFS</span>/usr/local/bin/docker
+RUN chmod +x <span class="nv">$ROOTFS</span>/usr/local/bin/docker
+<span class="c">#тут код для установки guest additions на виртуальную машину который копипастим отсюда https://gist.github.com/mattes/2d0ffd027cb16571895c</span>
 RUN /make_iso.sh
-CMD ["cat", "boot2docker.iso"]
-</code></pre>
+CMD <span class="o">[</span><span class="s2">"cat"</span>, <span class="s2">"boot2docker.iso"</span><span class="o">]</span>
+</pre></div>
 
 <ul>
 <li>билдим контейнер который в процесе билда создаст образ</li>
-</ul><pre lang="shell"><code>sudo docker build -t istarkov/boot2docker .
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>sudo docker build -t istarkov/boot2docker .
+</pre></div>
 
 <ul>
 <li>выводим результат себе из контейнера</li>
-</ul><pre lang="shell"><code>sudo docker run --rm istarkov/boot2docker &gt; boot2docker.iso
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>sudo docker run --rm istarkov/boot2docker &gt; boot2docker.iso
+</pre></div>
 
 <ul>
 <li>гасим докер если запущен</li>
-</ul><pre lang="shell"><code>boot2docker down
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>boot2docker down
+</pre></div>
 
 <ul>
 <li>копируем сбилженое iso к себе</li>
-</ul><pre lang="shell"><code>rsync -e ssh -avz --progress ice@turk:~/docker_test/docker/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>rsync -e ssh -avz --progress ice@turk:~/docker_test/docker/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
+</pre></div>
 
 <ul>
 <li>Шарим фолдер на макоси на виртуалку - чтобы mount volume опция докера работала на макоси также как и на linux</li>
-</ul><pre lang="shell"><code>VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users
-</code></pre>
+</ul><div class="highlight highlight-bash"><pre>VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users
+</pre></div>
 
 <ul>
 <li>Апаем boot2docker взад и проверяем что все замапилось нормально</li>
-</ul><pre lang="shell"><code>boot2docker up
-#не ленимся прописать export DOCKER_HOST=tcp://смотри вывод boot2docker up:2375
+</ul><div class="highlight highlight-bash"><pre>boot2docker up
+<span class="c">#не ленимся прописать export DOCKER_HOST=tcp://смотри вывод boot2docker up:2375</span>
 boot2docker ssh
-cd /Users
-#если все нормально то в папке /Users должны быть директории макоси /Users
-exit
-</code></pre>
+<span class="nb">cd</span> /Users
+<span class="c">#если все нормально то в папке /Users должны быть директории макоси /Users</span>
+<span class="nb">exit</span>
+</pre></div>
       </section>
     </div>
 
