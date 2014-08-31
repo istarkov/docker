@@ -169,10 +169,7 @@ sudo service docker stop ; sudo cp $(which docker) $(which docker)_ ; sudo cp ./
 *(это если в предыдущем пункте был выбран вариант 2)*
 
 * Запускаем linux (*под маком с билдом тоже лучше не связываться*) 
-* вытащить конфиг
-http://viget.com/extend/how-to-use-docker-on-os-x-the-missing-guide тут про риплейс iso
-boot2docker config > ~/.boot2docker/profile
-отпулим себе базовый контейнер билда iso
+* отпулим себе базовый контейнер билда iso
 ```shell
 docker pull boot2docker/boot2docker
 ```
