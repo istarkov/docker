@@ -27,7 +27,7 @@ RUN echo "" >> $ROOTFS/etc/motd; \
  
 # make mount permanent @todo it works, but its ugly. where should this go?
 RUN echo '#!/bin/sh' >> $ROOTFS/etc/rc.d/vbox-guest-additions-permanent-mount; \
-    echo 'sudo modprobe vboxsf && sudo mkdir /Users && sudo mount -t vboxsf home /Users' >> $ROOTFS/etc/rc.d/vbox-guest-additions-permanent-mount
+    echo 'sudo modprobe vboxsf && sudo mkdir /Users && sudo mount -t vboxsf -o defaults,uid=$(id -u docker),gid=$(id -g docker) home /Users' >> $ROOTFS/etc/rc.d/vbox-guest-additions-permanent-mount
 RUN chmod +x $ROOTFS/etc/rc.d/vbox-guest-additions-permanent-mount
 RUN echo '/etc/rc.d/vbox-guest-additions-permanent-mount' >> $ROOTFS/opt/bootsync.sh
  
