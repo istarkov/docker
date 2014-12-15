@@ -16,8 +16,11 @@
   #бывает у докера на osx слетает ip этой командой можно восстановить
   dreloadhost()
   {
+    
     SYSTEM=`uname`
-    [ "$SYSTEM" = "Darwin" ] && export DOCKER_HOST="tcp://`boot2docker ip 2>&1 | sed -n 2,2p | awk -F' ' '{print $9}'`:2375"
+    [ "$SYSTEM" = "Darwin" ] && export DOCKER_HOST="tcp://`boot2docker ip 2>&1 | sed -n 2,2p | awk -F' ' '{print $9}'`:2376"
+    [ "$SYSTEM" = "Darwin" ] && export DOCKER_CERT_PATH=/Users/ice/.boot2docker/certs/boot2docker-vm
+    [ "$SYSTEM" = "Darwin" ] && export DOCKER_TLS_VERIFY=1
   }
   dreloadhost
   #докер убить всех dkill -a 
@@ -49,18 +52,7 @@
   denter() {
     CONTAINER=$1
     shift 1
-    SYSTEM=`uname`
-    if [ "$SYSTEM" = "Darwin" ]
-    then
-      boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
-      #если стартовать как положено то зайдет под root и не будет tty а без tty тмукса не видать, поэтому стартуем script 
-      #и внимательно следим чтобы у всех контейнеров стоял крыжик -t
-      boot2docker ssh -t "sudo /var/lib/boot2docker/docker-enter $CONTAINER su - ice -c 'script -q /dev/null'"
-    else
-      [ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
-      #если не будет работать прописать полный путь /usr/local/bin/docker-enter
-      sudo docker-enter $CONTAINER su - ice -c 'script -q /dev/null'
-    fi
+    docker exec -it "$CONTAINER" su - ice -c 'script -q /dev/null'
   }
   ```
 
@@ -91,6 +83,38 @@
 * Качаем версию себе в моем случае <VERSION> == 0.9.13 `docker pull phusion/baseimage:0.9.13`
 
 ---
+Под OSX есть неприятность - vboxsf очень медленная поэтому шарить файлы лучше под nfs (будет в разы быстрее а внешне разница ноль)
+
+Для удобного и быстрого шаринга файловой системы под OSX надо   
+* Включить nfs на osx
+```shell
+#включить nfs сервер
+sudo nfsd enable
+#отредактировать файл с папками для шаринга
+sudo vi /etc/exports
+# добавить /Users
+#проверить что нет ошибок
+sudo nfsd checkexports
+#проверить что папки подцпились
+sudo nfsd stop
+sudo nfsd start
+showmount -e
+```
+
+* Сбилдить правильный boot2docker образ
+```
+cd boot2docker
+./build_iso.sh
+#перезаписать тот что есть
+boot2docker down
+cp boot2docker.iso ~/.boot2docker/boot2docker.iso
+boot2docker up
+```
+
+---
+
+
+
 
 ###Поиграться сразу можно так
 ```sh
