@@ -92,7 +92,7 @@
 sudo nfsd enable
 #отредактировать файл с папками для шаринга
 sudo vi /etc/exports
-# добавить /Users
+# добавить /Users -mapall=YOUR_USER_NAME
 #проверить что нет ошибок
 sudo nfsd checkexports
 #проверить что папки подцпились
