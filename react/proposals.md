@@ -45,10 +45,14 @@ And it looks like that next react versions will support relay - and all data met
 4) Why redux - IMHO (i know and write on a lot amount of flux frameworks) it's the best, it allows to create any available flux framework with it, it's great and it's the child of two greatest react programmers - aclark (flummox creator) and gaearon (Dan Abramov - hot reload creator).
 
 5) https://github.com/plentiful/jobs/blob/master/app/client/pages/edit-job.cjsx real fuck in render - 
-  render: ->
+```  
+render: ->
     div {},
       c JobHeading, id: @props.params.id
       JobForm job: @state.job
+```
 why to call CreateElement for JobHeading and not for JobForm imho it's (я бы убивал за такой код :-) ) 
+what the idea of differntiate factory objects and class objects
+
 
 
