@@ -28,8 +28,13 @@ getMeteorState: -> jobs: Jobs.findAndSort().fetch()
 ```
 to simple `Connector` like component with minimongo subscriptions and other stuff.
 
-Or (*i need some time to think about*) to move this logic into redux middlewares. 
-And just use redux (i saw Aclark talk about implementation observables with middlewares, need time to find)
+But imho there is more easy way (at first sight), all we need is to reuse [Redux](https://github.com/gaearon/redux) framework (it's really great). (I need to talk about with aclark or somebody like)
+
+I'm not know meteor much, but it looks like we can move this `startMeteorSubscriptions` to redux action (with support of redux middleware which will call store update `onDataChange`), and move `getMeteorState` in the same middleware.   
+* unified action will look like `subscribe('Players', players => players.find().fetch())`
+* imho unified actions is not a good way so just `subscribePlayers()`
+* action code will look like `subscribePlayers = () => ({type: MONGO_SUBSCRIPTION, table: 'players', fetch: players => players.find().fetch()})` or more simple
+* the same is for updates etc - is just a flux actions
 
 3) It looks like there is no need in server rendering at all for `admin like` apps, 
 so why not just to make meteor renders only simple html page with scripts generated with webpack.
