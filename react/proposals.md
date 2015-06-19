@@ -35,12 +35,14 @@ I'm not know meteor much, but it looks like we can move this `startMeteorSubscri
 * imho unified actions is not a good way so just `subscribePlayers()`
 * action code will look like `subscribePlayers = () => ({type: MONGO_SUBSCRIPTION, table: 'players', fetch: players => players.find().fetch()})` or more simple
 * the same is for updates etc - is just a flux actions
+* the best is to create HOC over redux Connector with support of `subscribe` `unsubscribe` over Meteor subscriptions - so we can reuse all the code as we have or not Meteor at all.
 
 3) It looks like there is no need in server rendering at all for `admin like` apps, 
 so why not just to make meteor renders only simple html page with scripts generated with webpack.
 We get modern build system - `webpack`, hot reloading etc... 
 And it looks like that next react versions will support relay - and all data meteor features become useless. (*IMHO*)
 
+4) Why redux - IMHO (i know and write on a lot amount of flux frameworks) it's the best, it allows to create any available flux framework with it, it's great and it's the child of two greatest react programmers - aclark (flummox creator) and gaearon (Dan Abramov - hot reload creator).
 
 
 
