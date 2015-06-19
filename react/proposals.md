@@ -58,12 +58,11 @@ what the idea of differntiate factory objects and class objects. This what i mea
 (and tech is fast today - one year ago cofee was a real good choice but not today)
 for example render function above in modern js looks like
 ```javascript
-render() {
+render: () => 
     <div>
         <JobHeading id = {this.props.params.id} />
         <JobForm job = {this.state.job} />
     </div>
-}
 ```
 don't like `this` use spread
 ```javascript
