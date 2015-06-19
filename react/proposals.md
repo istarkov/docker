@@ -8,7 +8,7 @@ This code https://github.com/plentiful/jobs/blob/master/app/client/components/jo
 In MVC approach you can think about `smart` components as like about 'controllers`.
 
 Have a look at any component in my public project.
-[smart component example](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_main/main_map_page.jsx)
+[smart component example](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_main/main_map_page.jsx)   
 All this component do, 
 is connect data (and subscribe to data changes) via `Connector` component to my `dumb` components.
 
