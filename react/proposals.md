@@ -54,5 +54,6 @@ render: ->
 why to call CreateElement for JobHeading and not for JobForm imho it's (я бы убивал за такой код (шучу Ваня) :-) ) 
 what the idea of differntiate factory objects and class objects. This what i mean  https://gist.github.com/sebmarkbage/fcb1b6ab493b0c77d589
 
+6) Cofee is a nowhere way - for now cofee looks like a dead language, one of the way to make your control great is to publush them in opensource world, is your need that almost nobody understand your language? I know that you think about tests - no tests gives you real user code review.
 
 
