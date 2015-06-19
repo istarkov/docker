@@ -57,3 +57,7 @@ what the idea of differntiate factory objects and class objects. This what i mea
 6) Cofee is a nowhere way (it looks good one year ago, but now :-( ) - for now cofee looks like a dead language, one of the way to make your controls great is to publush them in opensource world, is your need that almost nobody understand your language? I know that you think about tests - no tests gives you that can give a real user code review.
 (and tech is fast today - one year ago cofee was a real good choice but not today)
 
+7) React meteor projects are also dead now - the most popular version supports React v0.13.0 (March 10, 2015), for example in my real work i never use projects like this.
+
+
+
