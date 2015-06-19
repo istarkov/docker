@@ -28,7 +28,7 @@ getMeteorState: -> jobs: Jobs.findAndSort().fetch()
 ```
 to simple `Connector` like component with minimongo subscriptions and other stuff.
 
-But imho there is more easy way (at first sight), all we need is to reuse [Redux](https://github.com/gaearon/redux) framework (it's really great). (I need to talk about with aclark or somebody like)
+But imho there is more easy way (at first sight), all we need is to reuse [Redux](https://github.com/gaearon/redux) framework (it's really great). 
 
 I'm not know meteor much, but it looks like we can move this `startMeteorSubscriptions` to redux action (with support of redux middleware which will call store update `onDataChange`), and move `getMeteorState` in the same middleware.   
 * unified action will look like `subscribe('Players', players => players.find().fetch())`
