@@ -51,8 +51,8 @@ render: ->
       c JobHeading, id: @props.params.id
       JobForm job: @state.job
 ```
-why to call CreateElement for JobHeading and not for JobForm imho it's (я бы убивал за такой код :-) ) 
-what the idea of differntiate factory objects and class objects
+why to call CreateElement for JobHeading and not for JobForm imho it's (я бы убивал за такой код (шучу Ваня) :-) ) 
+what the idea of differntiate factory objects and class objects. This what i mean  https://gist.github.com/sebmarkbage/fcb1b6ab493b0c77d589
 
 
 
