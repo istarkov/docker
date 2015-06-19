@@ -5,7 +5,7 @@ its easy to move `to-from` meteor in the future and now.
 (*using this ideas i've moved my projects from flummox to redux in hours, not days.*)
 
 This code https://github.com/plentiful/jobs/blob/master/app/client/components/job-table.cjsx is not reusable it's `smart` and `dumb`.
-In MVC approach you can think about `smart` components as like about 'controllers`. (react is not MVC but it's eaay to think about if you 've used mvc)
+In MVC approach you can think about `smart` components as like about 'controllers`. (react is not MVC but it's easy to think about if you 've used mvc)
 
 Have a look at any component in my public project.
 [smart component example](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_main/main_map_page.jsx)   
