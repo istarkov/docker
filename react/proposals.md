@@ -31,7 +31,7 @@ to simple `Connector` like component with minimongo subscriptions and other stuf
 Or (*i need some time to think about*) to move this logic into redux middlewares. 
 And just use redux (i saw Aclark talk about implementation observables with middlewares, need time to find)
 
-3) It looks like there is no need in server rendering at all for admin like apps, 
+3) It looks like there is no need in server rendering at all for `admin like` apps, 
 so why not just to make meteor renders only simple html page with scripts generated with webpack.
 We get modern build system - `webpack`, hot reloading etc... 
 And it looks like that next react versions will support relay - and all data meteor features become useless. (*IMHO*)
