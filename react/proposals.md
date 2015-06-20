@@ -69,6 +69,22 @@ don't like `this` use spread
 const {id} = this.props.params;
 ```
 This code is more readable than cofee version - for almost any developer.
+(*for me this comma sign in coffee c JobHeading`,` id: @props.params.id kills all 
+
+As example can you explain in one fast sentence why this
+```
+div {},
+  c JobHeading, id: @props.params.id
+  JobForm job: @state.job
+```
+is normal cofee code and
+this
+```
+div, 
+  c JobHeading, id: @props.params.id
+  JobForm job: @state.job
+```
+is not :-) 
 
 
 7) React meteor projects are also dead now - the most popular version supports React v0.13.0 (March 10, 2015), for example in my real work i never use projects like this. React and js are so fast now - can you wait so many time when react adds observables support and many other features.
